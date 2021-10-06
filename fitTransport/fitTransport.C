@@ -153,11 +153,14 @@ int main(int argc, char *argv[])
     (
         fileName(control.lookup("CHEMKINTransportFile")).expand() 
     );
+    fileName FOAMTransportFile
+    (
+        fileName(control.lookup("FOAMTransportFile")).expand() 
+    );
 
     speciesTable species;
 //    chemkinReader cr(kineticsFile, species, thermoFile, false);
-    chemkinReader cr(species, kineticsFile, transportFile, thermoFile, false);
-
+    chemkinReader cr(species, kineticsFile, FOAMTransportFile, thermoFile, false);
     IFstream transport(transportFile);
     
     const label n = species.size();
