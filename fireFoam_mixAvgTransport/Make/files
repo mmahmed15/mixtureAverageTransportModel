@@ -1,0 +1,4 @@
+version.Fver
+fireFoam_mixAvgTransport.C
+
+EXE = $(FOAM_USER_APPBIN)/fireFoam_mixAvgTransport
