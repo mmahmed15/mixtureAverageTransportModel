@@ -109,7 +109,7 @@ void Foam::LewisNumber::correct()
     );
     forAll(Y_, i)
     {
-        Vcorr_ -= Y_[i]*V_[i];
+        Vcorr_ -= YV_[i];
     }
     phiCorr_ = 
         linearInterpolate
@@ -121,7 +121,7 @@ void Foam::LewisNumber::correct()
     
     forAll(Y_, specieI)
     {
-        V_[specieI] += Vcorr_;
+        YV_[specieI] += Vcorr_*Y_[specieI];
     }
 }
 // * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
@@ -375,12 +375,11 @@ void Foam::LewisNumber::update()
     
     forAll(Y_, specieI)
     {
-        V_[specieI] =
+        YV_[specieI] =
         (
             -Dmix_[specieI]*fvc::grad(Y_[specieI], "grad(Yi)")
             /(
                 thermo_.rho()
-               *(Y_[specieI] + dimensionedScalar("zero", dimless,SMALL)) 
              )
         );
     }    
@@ -395,7 +394,7 @@ void Foam::LewisNumber::write()
         muSpecies_[i].write();
         kappaSpecies_[i].write();
         Dmix_[i].write();
-        V_[i].write();
+        YV_[i].write();
     }
     Vcorr_.write();
     rhoTau()().write();

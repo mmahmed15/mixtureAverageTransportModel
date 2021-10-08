@@ -25,8 +25,6 @@ EXE_INC = \
     -I$(LIB_SRC)/thermophysicalModels/chemistryModel/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/solidChemistryModel/lnInclude \
     -I$(LIB_SRC)/combustionModels/lnInclude \
-    -I.././moleFractions/lnInclude \
-    -I.././laminarTransport/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/properties/solidProperties/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/properties/solidMixtureProperties/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/properties/liquidProperties/lnInclude \
@@ -37,6 +35,8 @@ EXE_INC = \
     -I$(LIB_SRC)/thermophysicalModels/radiation/lnInclude \
     -I$(LIB_SRC)/combustionModels/lnInclude \
     -I$(LIB_SRC)/lagrangian/basic/lnInclude \
+    -I.././moleFractions/lnInclude \
+    -I.././laminarTransport/lnInclude \
     -I$(LIB_SRC)/ODE/lnInclude
 
 
@@ -49,6 +49,8 @@ EXE_LIBS = \
          -lsplashingModels \
 	     -lrtiSampling \
          -lfvPatchFieldsPyrolysis \
+    -llaminarTransport \
+    -lmoleFraction \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
@@ -78,7 +80,4 @@ EXE_LIBS = \
         -lregionCouplingFF \
         -llagrangianIntermediateFF \
         -lnewInjectionModels \
-        -lRadiationBCs_FMG \
-    -llaminarTransport \
-    -lmoleFraction \
-    -lcombustionModels
+        -lRadiationBCs_FMG

@@ -4,8 +4,7 @@
     (
         fvm::ddt(rho, U) + fvm::div(phi, U)
       + MRF.DDt(rho, U)
-      //+ turbulence->divDevRhoReff(U)
-      + transport->divRhoTau(U) //MAT model
+      + transportModel.divRhoTau(U) //MAT model
      ==
 //        parcels.SU(U)
        fvOptions(rho, U)

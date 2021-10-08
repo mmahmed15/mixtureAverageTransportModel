@@ -18,12 +18,11 @@
             (
                 fvm::ddt(rho, Yi)
               + fvm::div(phi, Yi, "div(phi,Yi)")
-              + transport->Yflux(Yi) //MAT model
+              + transportModel.Yflux(Yi) //MAT model
               ==
-//                parcels.SYi(i, Yi)
-//              + surfaceFilm.Srho(i)
                combustion->R(Yi)
 //              - mesh.lookupObject<volScalarField>("sootFormationRate")
+//              + parcels.SYi(i, Yi)  
               + fvOptions(rho, Yi)
             );
 
@@ -47,12 +46,11 @@
             (
                 fvm::ddt(rho, Yi)
               + fvm::div(phi, Yi, "div(phi,Yi)")
-              + transport->Yflux(Yi) //MAT model
+              + transportModel.Yflux(Yi) //MAT model
               ==
-//                parcels.SYi(i, Yi)
-//              + surfaceFilm.Srho(i)
                combustion->R(Yi)
 //              + singleMixture.specieStoichCoeffs()[i] * mesh.lookupObject<volScalarField>("sootOxidationRate")
+//              + parcels.SYi(i, Yi)                 
               + fvOptions(rho, Yi)
             );
 
@@ -95,6 +93,7 @@
     fvScalarMatrix EEqn
     (
         fvm::ddt(rho, he) + fvm::div(phi, he, "div(phi,he)")
+      + fvc::ddt(rho, K) + fvc::div(phi, K)        
       + (
             he.name() == "e"
           ? (
@@ -104,22 +103,22 @@
                   p,
                 "div(phiv,p)"
               )
-            - fvm::laplacian(transport->alphaE(), he)
-            + transport->Econduction() 
+            - fvm::laplacian(transportModel.alphaE(), he)
+            + transportModel.Econduction() 
             )
           : (
-               - fvm::laplacian(transport->alpha(), he)
-//               + transport->Hconduction()
+               - dpdt
+               - fvm::laplacian(transportModel.alpha(), he)
+               + transportModel.Hconduction()
             )
         )
-//      + transport->JHs() 
+      + transportModel.JHs() 
      ==
         combustion->Sh()
 //      + mesh.lookupObject<volScalarField>("sootOxidationRate") * singleMixture.qFuel()
 //      + mesh.lookupObject<volScalarField>("sootOxidationRate") * (h0_CO - h0_F)
+//      + parcels.Sh(he)        
       + radiation->Sh(thermo)
-//      + parcels.Sh(he)
-//      + surfaceFilm.Sh()
       + fvOptions(rho, he)
     );
 

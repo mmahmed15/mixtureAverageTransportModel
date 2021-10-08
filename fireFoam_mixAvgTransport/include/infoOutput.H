@@ -21,6 +21,8 @@ else
 
 ft.max(0.0);
 ft.min(1.0);
+
+
 /*
 HRR_fu = ( - mvConvection->interpolate(phi,fu)*phi
            + (
@@ -123,7 +125,7 @@ forAll(QcWallFunction.boundaryField(), patchi)
 }
 
         
-/* 
+
         // alternative way to compute convective heat flux
         forAll(wallConvectiveHeatFlux.boundaryField(), patchi)
         {
@@ -133,12 +135,12 @@ forAll(QcWallFunction.boundaryField(), patchi)
            *(T.boundaryField()[patchi] - T.boundaryField()[patchi].patchInternalField())
            *mesh.boundary()[patchi].deltaCoeffs();
         }
-*/
+
    
 //debugnow alphaM = turbulence->alpha(); // this line crashes fireFoam in dev version
 //debugnow muM = turbulence->mu(); // this line crashes fireFoam in dev version
 
-/*        if (!constD) 
+        if (!constD) 
         {
             d = turbulence->alpha()/lewisNo/rho;
         }
@@ -147,9 +149,11 @@ forAll(QcWallFunction.boundaryField(), patchi)
             d = DM;
         }
         dSgs = (turbulence->alphaEff()-turbulence->alpha())/rho;
-*/
+
      //- Flame Extinction (Bert)
 //     volFracSpray = parcels.theta();
 //     rhoSpray = rhoWater*volFracSpray;
 
 //#include "rti.H"
+
+*/

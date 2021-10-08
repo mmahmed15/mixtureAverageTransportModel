@@ -109,7 +109,7 @@ void Foam::mixtureAverage::correct()
     );
     forAll(Y_, i)
     {
-        Vcorr_ -= Y_[i]*V_[i];
+        Vcorr_ -= YV_[i];
     }
     phiCorr_ = 
         linearInterpolate
@@ -121,7 +121,7 @@ void Foam::mixtureAverage::correct()
     
     forAll(Y_, specieI)
     {
-        V_[specieI] += Vcorr_;
+        YV_[specieI] += Vcorr_*Y_[specieI];
     }
 }
 
@@ -621,27 +621,25 @@ void Foam::mixtureAverage::update()
     {
         if (!gradX_)
         {
-            V_[specieI] =
+            YV_[specieI] =
             (
                 -Dmix_[specieI]*fvc::grad(Y_[specieI], "grad(Yi)")
                 /(
                     thermo_.rho()
-                    *(Y_[specieI] + dimensionedScalar("zero", dimless,SMALL)) 
                  )
             );
         }
         else
         {
-            V_[specieI] = 
+            YV_[specieI] = 
             (
                 -Dmix_[specieI]*fvc::grad(X_[specieI], "grad(Xi)")
                 /(
                     thermo_.rho()
-                   *(X_[specieI] + dimensionedScalar("zero", dimless,SMALL))
                 )
             );
         }
-        V_[specieI] += VT(specieI);
+        YV_[specieI] += VT(specieI)*Y_[specieI];
     }
     correct();
     //-calculate the mixture thermal conductivity
@@ -681,7 +679,7 @@ void Foam::mixtureAverage::write()
         muSpecies_[i].write();
         kappaSpecies_[i].write();
         Dmix_[i].write();
-        V_[i].write();
+        YV_[i].write();
     }
     Vcorr_.write();
     rhoTau()().write();

@@ -31,8 +31,9 @@ while (pimple.correctNonOrthogonal())
       + fvc::div(phiHbyA)
       - fvm::laplacian(rhorAUf, p_rgh)
      ==
-//        parcels.Srho()
-//      + surfaceFilm.Srho()
+//      -  mesh.lookupObject<volScalarField>("sootFormationRate")
+//      + mesh.lookupObject<volScalarField>("sootOxidationRate")
+//      +  parcels.Srho()     
        fvOptions(psi, p_rgh, rho.name())
     );
 

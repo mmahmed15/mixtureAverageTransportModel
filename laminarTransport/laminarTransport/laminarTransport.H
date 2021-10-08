@@ -79,7 +79,7 @@ protected:
         //-mixture thermal conductivity
         volScalarField kappa_;
         //- diffusion velocities
-        PtrList<volVectorField> V_;
+        PtrList<volVectorField> YV_;
         //- reference to velocity field
         const volVectorField& U_;
         //Viscosity Coefficients

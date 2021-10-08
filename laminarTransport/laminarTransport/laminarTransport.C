@@ -121,13 +121,13 @@ Foam::laminarTransport::laminarTransport
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::AUTO_WRITE,
-            false
+            IOobject::AUTO_WRITE
+//            false
         ),
         mesh,
         dimensionedScalar("zero", dimensionSet(1, 1, -3, -1, 0, 0, 0), 0.0)
     ),    
-    V_(n_),
+    YV_(n_),
     U_(U),
     a0_(n_),
     a1_(n_),
@@ -209,10 +209,10 @@ Foam::laminarTransport::laminarTransport
            );
        }
    }   
-   forAll(V_, i)
+   forAll(YV_, i)
    {
        const word name = "V." + Y_[i].name();
-       V_.set
+       YV_.set
        (
            i,
            new volVectorField
@@ -326,9 +326,7 @@ Foam::tmp<Foam::surfaceScalarField> Foam::laminarTransport::sumJ() const
         linearInterpolate
         (
             thermo_.rho()
-           *V_[specieI]
-           *Y_[specieI]
-            
+           *YV_[specieI]            
         ) & kappa_.mesh().Sf();
     }
     
@@ -444,8 +442,8 @@ Foam::tmp<Foam::volScalarField> Foam::laminarTransport::JHs() const
                 ph[faceI] = thermo_.composition().Hs(specieI, pi, Ti);
             }
         }
-        
-        JHs += thermo_.rho()*hSpecie*Y_[specieI]*V_[specieI];
+
+        JHs += thermo_.rho()*hSpecie*YV_[specieI];
     }
     
     return fvc::div(tJHs);    

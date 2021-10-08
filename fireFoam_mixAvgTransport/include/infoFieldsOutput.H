@@ -355,19 +355,6 @@
         turbulence->mu()
     );
 
-    volScalarField d
-    (
-        IOobject
-        (
-            "d",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        turbulence->alpha()/lewisNo/rho
-    );
-
     volScalarField dSgs
     (
         IOobject

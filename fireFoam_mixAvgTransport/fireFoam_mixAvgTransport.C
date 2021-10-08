@@ -32,14 +32,10 @@ Description
 
 #include "fvCFD.H"
 #include "turbulentFluidThermoModel.H"
-//#include "basicReactingCloud.H"
-//#include "surfaceFilmModel.H"
-//#include "pyrolysisModelCollection.H"
-#include "radiationModel.H"
-#include "SLGThermo.H"
-#include "solidChemistryModel.H"
 #include "psiCombustionModel.H"
+#include "radiationModel.H"
 #include "pimpleControl.H"
+#include "SLGThermo.H"
 #include "fvOptions.H"
 
 #include "singleStepCombustion.H"
@@ -54,22 +50,17 @@ Description
 
 int main(int argc, char *argv[])
 {
-    #include "postProcess.H"
-
     #include "setRootCase.H"
-    #include "printVersion.H"
     #include "createTime.H"
     #include "createMesh.H"
     #include "createControl.H"
     #include "createFields.H"
-    #include "createFieldRefs.H"
-    #include "infoFieldsOutput.H" // fm
+    //#include "infoFieldsOutput.H" // needs revision
     #include "createFvOptions.H"
     #include "initContinuityErrs.H"
     #include "createTimeControls.H"
     #include "compressibleCourantNo.H"
     #include "setInitialDeltaT.H"
-    //#include "readPyrolysisTimeControls.H"
 
     turbulence->validate();
 
@@ -81,59 +72,43 @@ int main(int argc, char *argv[])
     {
         #include "readTimeControls.H"
         #include "compressibleCourantNo.H"
-        //#include "solidRegionDiffusionNo.H"
-        //#include "setMultiRegionDeltaT.H"
         #include "setDeltaT.H"
 
         runTime++;
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-/*        parcels.evolve();
-
-        surfaceFilm.evolve();
-
-        if(solvePyrolysisRegion)
-        {
-            pyrolysis.evolve();
-        }
-*/
-        if (solvePrimaryRegion)
-        {
-
         Info << "solving two-way coupled soot-gas conservation equations" << endl;
     
-            #include "rhoEqn.H"
+        #include "rhoEqn.H"
 
-            //update Mixture Average Transport (MAT)
-            transport->update();
+        //update Mixture Average Transport (MAT)
+        transportModel.update();
 
-            // --- PIMPLE loop
-            while (pimple.loop())
+        // --- PIMPLE loop
+        while (pimple.loop())
+        {
+            #include "UEqn.H"
+            #include "YEEqn.H"
+
+            //update mole fractions for MAT
+            moleFraction_.update();
+
+            // --- Pressure corrector loop
+            while (pimple.correct())
             {
-                #include "UEqn.H"
-                #include "YEEqn.H"
-
-                //update mole fractions for MAT
-                moleFraction_.update();
-
-                // --- Pressure corrector loop
-                while (pimple.correct())
-                {
-                    #include "pEqn.H"
-                }
-
-                if (pimple.turbCorr())
-                {
-                    turbulence->correct();
-                }
+                #include "pEqn.H"
             }
 
-            rho = thermo.rho();
-
-            #include "infoOutput.H" // need to be modified using MAT model
-
+            if (pimple.turbCorr())
+            {
+                turbulence->correct();
+            }
         }
+
+        rho = thermo.rho();
+
+        #include "infoOutput.H" // need revision
 
         runTime.write();
 

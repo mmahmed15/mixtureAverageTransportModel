@@ -37,8 +37,8 @@ Description
       ==
 //      -  mesh.lookupObject<volScalarField>("sootFormationRate")
 //      + mesh.lookupObject<volScalarField>("sootOxidationRate")
-//      + parcels.Srho(rho)
-//      + surfaceFilm.Srho()
+//      +  parcels.Srho(rho)
+//      + surfaceFilm.Srho()      
        fvOptions(rho)
     );
 
