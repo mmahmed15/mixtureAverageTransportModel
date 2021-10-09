@@ -121,7 +121,7 @@ void Foam::mixtureAverage::correct()
     
     forAll(Y_, specieI)
     {
-        YV_[specieI] += Vcorr_*Y_[specieI];
+        YV_[specieI] += Y_[specieI]*Vcorr_;
     }
 }
 
@@ -637,9 +637,10 @@ void Foam::mixtureAverage::update()
                 /(
                     thermo_.rho()
                 )
+                * thermo_.composition().W(specieI)/W()
             );
         }
-        YV_[specieI] += VT(specieI)*Y_[specieI];
+        YV_[specieI] += Y_[specieI]*VT(specieI);
     }
     correct();
     //-calculate the mixture thermal conductivity

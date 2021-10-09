@@ -1,4 +1,12 @@
 {
+
+    radiation->correct();
+
+    const volScalarField::Internal T4 = pow(thermo.T(),4).ref();
+    const volScalarField::Internal rad = radiation->Ru() - radiation->Rp().ref()*T4;
+    volScalarField::Internal & radField = dQrad.ref();
+    radField = rad;
+
     volScalarField& he = thermo.he();
     fvScalarMatrix EEqn
     (

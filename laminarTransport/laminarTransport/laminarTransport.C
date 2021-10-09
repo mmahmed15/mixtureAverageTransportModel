@@ -121,8 +121,8 @@ Foam::laminarTransport::laminarTransport
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-//            false
+            IOobject::AUTO_WRITE,
+            false
         ),
         mesh,
         dimensionedScalar("zero", dimensionSet(1, 1, -3, -1, 0, 0, 0), 0.0)
@@ -442,7 +442,7 @@ Foam::tmp<Foam::volScalarField> Foam::laminarTransport::JHs() const
                 ph[faceI] = thermo_.composition().Hs(specieI, pi, Ti);
             }
         }
-
+        
         JHs += thermo_.rho()*hSpecie*YV_[specieI];
     }
     

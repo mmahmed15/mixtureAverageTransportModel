@@ -121,7 +121,7 @@ void Foam::LewisNumber::correct()
     
     forAll(Y_, specieI)
     {
-        YV_[specieI] += Vcorr_*Y_[specieI];
+        YV_[specieI] += Y_[specieI]*Vcorr_;
     }
 }
 // * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //

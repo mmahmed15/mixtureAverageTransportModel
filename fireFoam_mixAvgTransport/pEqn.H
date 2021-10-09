@@ -59,3 +59,6 @@ if (thermo.dpdt())
 {
     dpdt = fvc::ddt(p);
 }
+
+Info<< "min/max(p) = "
+    << min(p).value() << ", " << max(p).value() << endl;

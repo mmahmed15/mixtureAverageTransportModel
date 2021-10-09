@@ -155,3 +155,18 @@ forAll(Y, i)
 }
 
 #include "createMRF.H"
+
+
+volScalarField dQrad
+(
+ IOobject
+ (
+  "dQrad",
+  runTime.timeName(),
+  mesh,
+  IOobject::NO_READ,
+  IOobject::AUTO_WRITE
+ ),
+ mesh,
+ dimensionedScalar("dQrad", dimEnergy/dimTime/dimVolume,0.0)
+ );
