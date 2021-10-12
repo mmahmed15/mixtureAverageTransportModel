@@ -168,6 +168,10 @@ public:
         {
             return alpha_;
         }
+        const scalarField& alpha(const label patchi) const
+        {
+            return alpha_.boundaryField()[patchi];
+        }        
         //- Constant access to the mixture thermal diffusivity (internal 
         //  energy) 
         const volScalarField& alphaE() const
