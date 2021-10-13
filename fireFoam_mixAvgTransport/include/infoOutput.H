@@ -9,7 +9,7 @@
     )
 );
 */
-
+/*
 if (thermo.composition().contains("O2")) 
 {
     ft = (s*fu-O2+YO2Inf)/(s*YFInf+YO2Inf);
@@ -21,7 +21,7 @@ else
 
 ft.max(0.0);
 ft.min(1.0);
-
+*/
 
 /*
 HRR_fu = ( - mvConvection->interpolate(phi,fu)*phi

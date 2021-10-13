@@ -24,6 +24,8 @@ scalar  YO2Inf = readScalar(thermo.lookup("YO2Inf"));
 scalar  YFInf = readScalar(thermo.lookup("YFInf"));
 
 const word inertSpecie(thermo.lookup("inertSpecie"));
+const word fuel(thermo.lookup("fuel"));
+
 if (!composition.species().found(inertSpecie))
 {
     FatalIOErrorIn(args.executable().c_str(), thermo)
@@ -187,8 +189,11 @@ autoPtr<laminarTransport> ptransport
 laminarTransport& transportModel = ptransport();
 
 
-// ---------- additional fields for diagnostics ----------
+const label inertIndex(composition.species()[inertSpecie]);
+const label fuelIndex(composition.species()[fuel]);
 
+// ---------- additional fields for diagnostics ----------
+/*
 singleStepReactingMixture<gasHThermoPhysics>& singleMixture  
 (
     dynamic_cast<singleStepReactingMixture<gasHThermoPhysics>&>
@@ -202,10 +207,6 @@ Info <<"s = " << s << endl;
 // heat of combustion [J/kg]
 scalar qFuel(singleMixture.qFuel().value());
 Info <<"qFuel = " << qFuel << endl;
-
-label fuelIndex(singleMixture.fuelIndex());  
-
-const label inertIndex(composition.species()[inertSpecie]);
 
 const volScalarField* O2Ptr = &Y[inertIndex]; //dummy ptr when O2 is not available 
 if (thermo.composition().contains("O2"))   
@@ -248,3 +249,4 @@ volScalarField ft
     ),
 (fu-O2/s+YO2Inf/s)/(YFInf+YO2Inf/s)
 );
+*/
