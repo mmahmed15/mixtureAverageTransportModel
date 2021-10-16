@@ -63,7 +63,7 @@ class totalFlowRateAdvectiveDiffusiveTransport
 public:
 
     //- Runtime type information
-    TypeName("totalFlowRateAdvectiveDiffusiveTransport");
+    TypeName("totalFlowRateAdvectiveDiffusiveMAT");
 
 
     // Constructors

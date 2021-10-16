@@ -163,19 +163,22 @@ void Foam::totalFlowRateAdvectiveDiffusiveTransport::updateCoeffs()
             )
         );
 
-    const volScalarField& alpha =
+
+    word fieldName = this->internalField().name();
+    
+    const volScalarField& laminarDiffCoeff =
         db().lookupObject
         <
             volScalarField
         >
         (
-            "alpha"
+            "Dmix." + fieldName
         );        
 
     const fvsPatchField<scalar>& phip =
         patch().lookupPatchField<surfaceScalarField, scalar>(phiName_);
 
-    const scalarField alphap(turbModel.alphat(patchi) + alpha.boundaryField()[patchi]);
+    const scalarField alphap(turbModel.alphat(patchi) + laminarDiffCoeff.boundaryField()[patchi]);
 
     refValue() = massFluxFraction_;
     refGrad() = 0.0;
